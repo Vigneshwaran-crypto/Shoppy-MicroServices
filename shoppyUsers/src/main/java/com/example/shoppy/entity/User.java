@@ -25,7 +25,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Users {
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +33,9 @@ public class Users {
 	
 	@Column(unique = true,nullable = false)
 	private String email;
+	
+	@Column(nullable = false) 
+	private String password;
 	
 	@Column(nullable = false)
 	private String name;
@@ -55,5 +58,15 @@ public class Users {
 	
 	@UpdateTimestamp
 	private LocalDateTime updatedAt;
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", phone=" + phone
+				+ ", address=" + address + ", pincode=" + pincode + ", role=" + role + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + "]";
+	}
+	
+	
+	
 
 }
