@@ -11,5 +11,7 @@ public interface UsersService {
 	Response createUser(CreateUserDTO req, HttpServletRequest hd);
 	
 	Response signIn(SignInDTO req, HttpServletRequest hd);
+	
+	Response getUserById(CreateUserDTO id, HttpServletRequest hd);
 
 }

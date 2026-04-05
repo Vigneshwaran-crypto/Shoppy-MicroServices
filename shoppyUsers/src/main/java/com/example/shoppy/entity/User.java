@@ -29,7 +29,7 @@ public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Integer userId;
 	
 	@Column(unique = true,nullable = false)
 	private String email;
@@ -52,6 +52,9 @@ public class User {
 	@Column(nullable = false,length=20)
 	private String role = "CUSTOMER";
 	
+	@Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
+	private Boolean isActive=true;
+	
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime createdAt;
@@ -61,7 +64,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + password + ", name=" + name + ", phone=" + phone
+		return "User [userId=" + userId + ", email=" + email + ", password=" + password + ", name=" + name + ", phone=" + phone
 				+ ", address=" + address + ", pincode=" + pincode + ", role=" + role + ", createdAt=" + createdAt
 				+ ", updatedAt=" + updatedAt + "]";
 	}

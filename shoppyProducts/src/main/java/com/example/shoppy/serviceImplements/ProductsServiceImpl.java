@@ -1,7 +1,5 @@
 package com.example.shoppy.serviceImplements;
 
-import java.math.BigDecimal;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.example.shoppy.dto.Response;
 import com.example.shoppy.dto.WebModal;
@@ -66,9 +63,9 @@ public class ProductsServiceImpl implements ProductsService {
 		stk.setProductId(prod.getId());
 		inventRepo.save(stk);
 
-//		return new Response(1, "success", prod);
+		return new Response(1, "success", prod);
 		
-		throw new RuntimeException("Test Errooccured "); // manually print exception
+//		throw new RuntimeException("Test Errooccured "); // manually print exception
 	} catch (Exception e) {
 //		e.printStackTrace(); // can't print stack while transaction
 		throw new RuntimeException(e); // manually print exception

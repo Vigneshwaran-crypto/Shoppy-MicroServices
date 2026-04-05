@@ -1,12 +1,15 @@
 package com.example.shoppy.service;
 
-import java.math.BigDecimal;
-
+import com.example.shoppy.dto.OrderCreateDTO;
 import com.example.shoppy.dto.Response;
-import com.example.shoppy.dto.WebModal;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface OrdersService {
 	
-
-
+	 Response createOrder( OrderCreateDTO order,HttpServletRequest req); 
+	 
+	 Response getOrderById( OrderCreateDTO order,HttpServletRequest req); 
+	 
+	 
 }

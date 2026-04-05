@@ -1,6 +1,7 @@
 package com.example.shoppy.serviceImplements;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,7 @@ public class UsersServiceImpl implements UsersService {
 			usr.setPassword(passEncoder.encode(req.getPassword()));
 			
 			User svdUsr = usrRepo.save(usr);
+			svdUsr.setPassword(null);
 			return new Response(1,"User Created Successfully",svdUsr);
 		} catch (Exception e) {
 			log.error("createUser method catch : {}",e);
@@ -84,6 +86,24 @@ public class UsersServiceImpl implements UsersService {
 			log.error("signIn method catch : {}",e);
 			return new Response(0,e.getMessage(),null);
 		}
+	}
+
+
+	@Override
+	public Response getUserById(CreateUserDTO usr, HttpServletRequest hd) {
+		try {
+			Optional<User> isUser = usrRepo.findByUserIdAndIsActiveTrue(usr.getUserId());
+			
+			if(isUser.isPresent()) {
+				isUser.get().setPassword(null);
+				return new Response(1,"User Data",isUser.get());
+			}
+			return new Response(0,"No User For This UserId",null);
+		} catch (Exception e) {
+			log.error("getUserById method catch : {}",e);
+			return new Response(0,e.getMessage(),null);
+		}
+		
 	}
 
 }

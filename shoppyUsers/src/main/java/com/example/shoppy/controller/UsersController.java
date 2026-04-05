@@ -15,6 +15,7 @@ import com.example.shoppy.dto.CreateUserDTO;
 import com.example.shoppy.dto.Response;
 import com.example.shoppy.dto.SignInDTO;
 import com.example.shoppy.repository.UsersRepo;
+import com.example.shoppy.security.JwtUtils;
 import com.example.shoppy.service.UsersService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +31,9 @@ public class UsersController {
 	
 	@Autowired
 	private UsersRepo usrRepo;
+	
+	@Autowired
+	private JwtUtils jwtUtils;
 		
 	@PostMapping("/createUser")
 	public ResponseEntity<Response> createUser(@Valid @RequestBody CreateUserDTO req,HttpServletRequest hd){
@@ -37,8 +41,8 @@ public class UsersController {
 		try {
 			return new ResponseEntity<Response>(usrService.createUser(req,hd),HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.info("createUser api catch : {} ",e.getMessage());
+			
+			log.info("createUser api catch : {} ",e);
 			return ResponseEntity.internalServerError().body(new Response(0,e.getMessage(),null));
 		}
 	}
@@ -50,9 +54,7 @@ public class UsersController {
 		try {
 			return new ResponseEntity<Response>(usrService.signIn(req,hd),HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
-			log.info("signIn api catch : {}",e.getMessage());
-			
+			log.info("signIn api catch : {}",e);
 			return ResponseEntity.internalServerError().body(new Response(0,e.getMessage(),null));
 		}
 	}
@@ -62,6 +64,9 @@ public class UsersController {
 	@PostMapping("/getUserDetails")
 	public ResponseEntity<Response> getUserDetails(@RequestBody SignInDTO req,HttpServletRequest hd){
 		log.info("getUserDetails api hit : {}",SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+
+		log.info("extracted user from token : {}",jwtUtils.extractAllClaims(hd.getHeader("Authorization").substring(7)));
+
 		try {
 			return new ResponseEntity<Response>(new Response(0,"Success",usrRepo.findByEmail(req.getEmail())),HttpStatus.OK);
 		} catch (Exception e) {
@@ -73,6 +78,17 @@ public class UsersController {
 	}
 
 	
+	@PostMapping("/getUserById")
+	public ResponseEntity<Response> getUserById(@RequestBody CreateUserDTO id,HttpServletRequest hd){
+		log.info("getUserDetails api hit : {}",SecurityContextHolder.getContext().getAuthentication());
+		try {
+			return new ResponseEntity<Response>(usrService.getUserById(id,hd),HttpStatus.OK);
+		} catch (Exception e) {
+			log.info("getUserById api catch : {}",e);
+			return ResponseEntity.internalServerError().body(new Response(0,e.getMessage(),null));
+		}
+		
+	}
 	
 	
 }

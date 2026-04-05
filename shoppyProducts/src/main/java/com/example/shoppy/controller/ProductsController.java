@@ -16,7 +16,7 @@ import com.example.shoppy.dto.WebModal;
 import com.example.shoppy.service.ProductsService;
 
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/prod")
 public class ProductsController {
 	public static final Logger logger = LoggerFactory.getLogger(ProductsController.class);
 	

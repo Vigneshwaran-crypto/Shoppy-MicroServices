@@ -23,8 +23,7 @@ public class JwtUtils {
 	private final long EXPIRY = 1000 * 60 * 60 * 24;
 
 	public String generateToken(String email, Map<String, Object> claims) {
-		return Jwts.builder().setClaims(claims).setSubject(email)
-				.setId(claims.get("userId").toString())
+		return Jwts.builder().setClaims(claims).setSubject(email).setId(claims.get("id").toString())
 				.setIssuedAt(new Date()).setExpiration(new Date(System.currentTimeMillis() + EXPIRY))
 				.signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
 	}

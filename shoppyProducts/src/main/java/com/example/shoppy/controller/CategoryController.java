@@ -18,7 +18,7 @@ import com.example.shoppy.service.CategoryService;
 
 @CrossOrigin(origins = { "*" })
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/cat")
 public class CategoryController {
 	public static final Logger logger = LoggerFactory.getLogger(CategoryController.class);
 	

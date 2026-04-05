@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.example.shoppy.dto.ErrorDetails;
 import com.example.shoppy.dto.Response;
 
-import io.jsonwebtoken.ExpiredJwtException;
-
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -28,11 +26,6 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(BusinessException.class)
 	public Response BusinessExpHandler(BusinessException ex) {
-		return new Response(0,ex.getMessage(),null);
-	}
-	
-	@ExceptionHandler(ExpiredJwtException.class)
-	public Response BusinessExpHandler(ExpiredJwtException ex) {
 		return new Response(0,ex.getMessage(),null);
 	}
 
