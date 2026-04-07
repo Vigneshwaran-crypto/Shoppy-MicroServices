@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: shoppy-users
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+            
+        - id: shoppy-product
+          uri: http://localhost:8083
+          predicates:
+          - Path=/api/prod/**
+          filters:
+          - RewritePath=/api/(?<segment>.*), /${segment}
+          
+        - id: shoppy-order
+          uri: http://localhost:8084
+          predicates:
+          - Path=/api/order/**
+          filters:
+          - RewritePath=/api/(?<segment>.*), /${segment}
