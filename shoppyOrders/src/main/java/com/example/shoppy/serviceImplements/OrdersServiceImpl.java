@@ -8,14 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.shoppy.config.UsersClient;
-import com.example.shoppy.dto.CreateUserDTO;
+import com.example.shoppy.clients.UsersClient;
 import com.example.shoppy.dto.OrderCreateDTO;
 import com.example.shoppy.dto.OrderItemsDTO;
 import com.example.shoppy.dto.Response;
 import com.example.shoppy.entity.OrderItems;
 import com.example.shoppy.entity.Orders;
-import com.example.shoppy.exceptions.BusinessException;
+import com.example.shoppy.kafka.KafkaProducerService;
 import com.example.shoppy.repository.OrdersRepo;
 import com.example.shoppy.service.OrdersService;
 
@@ -28,6 +27,9 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Autowired
 	private UsersClient usrClient;
+	
+	@Autowired
+	private KafkaProducerService kafkaProducer;
 
 	@Autowired
 	private OrdersRepo orderRepo;
@@ -45,7 +47,7 @@ public class OrdersServiceImpl implements OrdersService {
 				Orders ord = new Orders();
 				ord.setUserId((Integer) usr.get("userId"));
 
-				for (OrderItemsDTO item : order.getOrderItems()) {
+				for(OrderItemsDTO item : order.getOrderItems()) {
 
 					OrderItems orderItem = new OrderItems();
 
@@ -62,7 +64,9 @@ public class OrdersServiceImpl implements OrdersService {
 				ord.setTotal(total);
 
 				Orders svd = orderRepo.save(ord);
-
+				
+				kafkaProducer.publishOrderCreateEvent(svd); //producing kafka event
+				
 				return new Response(1, "Order Placed Successfully", svd);
 			}
 

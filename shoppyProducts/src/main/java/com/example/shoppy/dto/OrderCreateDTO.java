@@ -28,8 +28,8 @@ public class OrderCreateDTO {
 
 	private LocalDateTime updatedAt;
 	
-	@NotNull(message = "At least one Order Item is required")
-	@Size(min=1,message = "order must contain one item")
-	private List<OrderItemsDTO> orderItems;
+//	@NotNull(message = "At least one Order Item is required")
+//	@Size(min=1,message = "order must contain one item")
+//	private List<OrderItemsDTO> orderItems;
 	
 }

@@ -46,5 +46,10 @@ public class OrderItems {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id",nullable = false)
 	private Orders orders;
+	
+//	@JsonIgnore
+//	@ManyToOne(fetch =FetchType.LAZY)
+//	@JoinColumn(name = "order_id",nullable = false)
+//	private Orders ord;
 
 }

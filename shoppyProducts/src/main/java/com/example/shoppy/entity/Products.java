@@ -46,6 +46,9 @@ public class Products {
 	
 	private Integer brandId;
 	
+	@Column(nullable = false , columnDefinition = "INT DEFAULT 50")
+	private Integer qty;
+	
 	@Column(nullable = false)
 	private boolean isActive;
 	

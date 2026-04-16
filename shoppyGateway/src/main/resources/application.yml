@@ -1,24 +1,39 @@
 spring:
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true                   
+          lower-case-service-id: true
+          
       routes:
         - id: shoppy-users
-          uri: http://localhost:8082
+#          uri: http://localhost:8082 // without eureka server 
+          uri: lb://SHOPPYUSERS
           predicates:
             - Path=/api/auth/**
           filters:
             - RewritePath=/api/(?<segment>.*), /${segment}
             
         - id: shoppy-product
-          uri: http://localhost:8083
+#          uri: http://localhost:8083
+          uri: lb://SHOPPYPRODUCTS
           predicates:
           - Path=/api/prod/**
           filters:
           - RewritePath=/api/(?<segment>.*), /${segment}
           
         - id: shoppy-order
-          uri: http://localhost:8084
+#          uri: http://localhost:8084
+          uri: lb://SHOPPYORDERS
           predicates:
           - Path=/api/order/**
           filters:
           - RewritePath=/api/(?<segment>.*), /${segment}
+          
+          eureka:
+            client:
+              service-url:
+                defaultZone: http://localhost:8761/eureka
+            instance:
+              prefer-ip-address: true
