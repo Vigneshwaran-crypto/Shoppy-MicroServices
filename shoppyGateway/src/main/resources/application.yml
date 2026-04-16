@@ -4,8 +4,15 @@ spring:
       discovery:
         locator:
           enabled: true                   
-          lower-case-service-id: true
-          
+
+      loadbalancer:
+          cache:
+            enabled: true
+            ttl: 5s          # Refresh cache every 5 seconds (very important)
+            capacity: 256
+            retry:
+ 
+                  
       routes:
         - id: shoppy-users
 #          uri: http://localhost:8082 // without eureka server 
@@ -35,5 +42,7 @@ spring:
             client:
               service-url:
                 defaultZone: http://localhost:8761/eureka
+              registry-fetch-interval-seconds: 5
+              instance-info-replication-interval-seconds: 5
             instance:
               prefer-ip-address: true
