@@ -27,7 +27,7 @@ public class KafkaConsumerService {
 	@Autowired
 	private ProductsRepo productRepo;
 
-	@KafkaListener(topics = "order-created", groupId = "shoppy-events")
+	@KafkaListener(topics = "order-created", groupId = "shoppy-products")
 	public void orderCreatedConsumer(Map<String, Object> event) {
 
 		OrdersDTO orders = objMapper.convertValue(event, new TypeReference<OrdersDTO>() {

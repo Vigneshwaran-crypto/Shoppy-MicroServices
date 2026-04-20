@@ -82,7 +82,9 @@ public class OrdersServiceImpl implements OrdersService {
 	public Response getOrderById(OrderCreateDTO order, HttpServletRequest req) {
 		try {
 			Optional<Orders> ord = orderRepo.findByOrderId(order.getOrderId());
-			if(ord.isPresent())return new Response(1, "Order Fetched Successfully", ord.get());
+			
+			if(ord.isPresent()) return new Response(1, "Order Fetched Successfully", ord.get());
+			
 			return new Response(0, "No Order of OrderId : "+order.getOrderId(), null);
 		} catch (Exception e) {
 			log.info("getOrderById catch : ", e);

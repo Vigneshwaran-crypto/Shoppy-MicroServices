@@ -26,9 +26,7 @@ public class KafkaConsumerConfig {
 		
 		JacksonJsonDeserializer<Object> deserializer =
 		        new JacksonJsonDeserializer<>(Object.class,false);
-		
-//		deserializer
-		
+
 		Map<String, Object> config = new HashMap<>();
 		
 		config.put(JacksonJsonDeserializer.TRUSTED_PACKAGES, "*");

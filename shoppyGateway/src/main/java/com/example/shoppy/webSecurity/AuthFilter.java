@@ -33,7 +33,7 @@ public class AuthFilter implements WebFilter {
 		
 		String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
 		
-		System.out.println("Request header :"+authHeader);
+//		System.out.println("Request header :"+authHeader);
 		
 		String email = null;
 		String token = null;
