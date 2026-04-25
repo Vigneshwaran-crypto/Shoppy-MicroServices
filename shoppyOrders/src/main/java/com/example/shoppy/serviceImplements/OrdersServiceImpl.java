@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.shoppy.clients.UsersClient;
 import com.example.shoppy.dto.OrderCreateDTO;
 import com.example.shoppy.dto.OrderItemsDTO;
 import com.example.shoppy.dto.Response;
