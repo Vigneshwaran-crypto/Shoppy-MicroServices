@@ -17,6 +17,7 @@ import com.example.shoppy.entity.Orders;
 import com.example.shoppy.kafka.KafkaProducerService;
 import com.example.shoppy.repository.OrdersRepo;
 import com.example.shoppy.service.OrdersService;
+import com.example.shoppy.serviceCaller.UserServiceCaller;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -24,9 +25,9 @@ import jakarta.servlet.http.HttpServletRequest;
 public class OrdersServiceImpl implements OrdersService {
 
 	public static final Logger log = LoggerFactory.getLogger(OrdersServiceImpl.class);
-
+	
 	@Autowired
-	private UsersClient usrClient;
+	private UserServiceCaller userServiceCaller;
 	
 	@Autowired
 	private KafkaProducerService kafkaProducer;
@@ -38,7 +39,9 @@ public class OrdersServiceImpl implements OrdersService {
 	public Response createOrder(OrderCreateDTO order, HttpServletRequest req) {
 		try {
 
-			Response usrRes = usrClient.getUserById(order, req.getHeader("Authorization"));
+//			Response usrRes = usrClient.getUserById(order, req.getHeader("Authorization"));
+			
+			Response usrRes = userServiceCaller.getUserById(order, req.getHeader("Authorization"));
 
 			if (usrRes.getStatus().equals(1)) {
 
@@ -68,6 +71,8 @@ public class OrdersServiceImpl implements OrdersService {
 				kafkaProducer.publishOrderCreateEvent(svd); //producing kafka event
 				
 				return new Response(1, "Order Placed Successfully", svd);
+			}else if(usrRes.getStatus().equals(2)) {
+				return new Response(-1, "User Service Unavailable", null);
 			}
 
 			return new Response(0, "No User Found of UserId : ", order.getUserId());
