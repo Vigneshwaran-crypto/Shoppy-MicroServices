@@ -1,5 +1,6 @@
 package com.example.shoppy.controller;
 
+import org.hibernate.annotations.Cache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +125,18 @@ public class ProductsController {
 		logger.info("createProduct triggered");
 		try {
 			return new ResponseEntity<Response>(prodService.getAllProducts(webmodal),HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("createProduct api catch :",e);
+			return ResponseEntity.internalServerError().body(new Response(0,e.getMessage(),null));	
+		}
+	}
+	
+	@GetMapping("/getFullProducts")
+	public ResponseEntity<Response> getFullProducts(){
+		logger.info("getFullProducts triggered");
+		try {
+			return new ResponseEntity<Response>(prodService.getFullProducts(),HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("createProduct api catch :",e);

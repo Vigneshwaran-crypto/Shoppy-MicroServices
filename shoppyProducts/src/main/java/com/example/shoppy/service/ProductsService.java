@@ -10,5 +10,7 @@ public interface ProductsService {
 	Response createProduct(WebModal webmodal);
 	
 	Response getAllProducts(WebModal webmodal);
+	
+	Response getFullProducts();
 
 }

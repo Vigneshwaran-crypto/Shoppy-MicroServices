@@ -1,5 +1,8 @@
 package com.example.shoppy.serviceImplements;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,13 +29,16 @@ public class ProductsServiceImpl implements ProductsService {
 	public static final Logger logger = LoggerFactory.getLogger(ProductsServiceImpl.class);
 
 	@Autowired
-	ProductsRepo prodRepo;
+	private ProductsRepo prodRepo;
 
 	@Autowired
-	CategoryRepo catRepo;
+	private CategoryRepo catRepo;
 
 	@Autowired
-	InventoryRepo inventRepo;
+	private InventoryRepo inventRepo;
+	
+	@Autowired
+	private RedisTemplate<String, Object> redisTemplate;
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
@@ -97,8 +104,38 @@ public class ProductsServiceImpl implements ProductsService {
 			} else {
 				prodList = prodRepo.findByIsActiveTrue(page);
 			}
+			
+		
+			
+
 
 			return new Response(1, "success", prodList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new Response(0, "getAllProducts method fails", null);
+		}
+	}
+
+	@Override
+	public Response getFullProducts() {
+		try {
+			String redisKey = "product::all";
+			Object cache = redisTemplate.opsForValue().get(redisKey);
+			
+			if(cache != null) {
+				return new Response(0, "success", (List<Products>) cache);
+			}
+
+			
+			List<Products> prods = prodRepo.findAll();
+			redisTemplate.opsForValue().set(redisKey, prods);
+			
+//			redisTemplate.opsForValue().set(redisKey, prods,5,TimeUnit.MINUTES); // TTL - time to live - now the data only live in this 5 minutes
+			
+//			redisTemplate.delete(redisKey) //delete in where you update the values fo db , so the cache won't have tp use the stale data
+			
+			return new Response(0, "success", prods);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new Response(0, "getAllProducts method fails", null);
