@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.shoppy.dto.Response;
@@ -41,7 +42,7 @@ public class ProductsServiceImpl implements ProductsService {
 	private RedisTemplate<String, Object> redisTemplate;
 
 	@Override
-	@Transactional(rollbackFor = Exception.class)
+	@Transactional(rollbackFor = Exception.class,isolation = Isolation.REPEATABLE_READ )
 	public Response createProduct(WebModal webmodal) {
 	try {
 

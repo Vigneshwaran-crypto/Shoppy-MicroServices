@@ -38,6 +38,14 @@ spring:
           filters:
           - RewritePath=/api/(?<segment>.*), /${segment}
           
+        - id: shoppy-saga
+#          uri: http://localhost:8085
+          uri: lb://SHOPPYSAGA
+          predicates:
+          - Path=/api/saga/**
+          filters:
+          - RewritePath=/api/(?<segment>.*), /${segment}
+          
           eureka:
             client:
               service-url:

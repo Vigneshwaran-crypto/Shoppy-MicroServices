@@ -96,4 +96,27 @@ public class OrdersServiceImpl implements OrdersService {
 		}
 	}
 
+	@Override
+	public Response updateOrderById(OrderCreateDTO order, HttpServletRequest req) {
+		try {
+			
+			Optional<Orders> ord = orderRepo.findByOrderId(order.getOrderId());
+			
+			if(ord.isEmpty()) return new Response(0, "No Order of OrderId : "+order.getOrderId(), null);
+			
+			Orders ordDb = ord.get();
+			
+			ordDb.setStatus(order.getStatus());
+			
+			Orders updatedOrd = orderRepo.save(ordDb);
+			
+				return new Response(1, "Order status updated : "+order.getOrderId(),updatedOrd);
+			
+			
+		} catch (Exception e) {
+			log.info("getOrderById catch : ", e);
+			return new Response(0, e.getMessage(), null);
+		}
+	}
+
 }

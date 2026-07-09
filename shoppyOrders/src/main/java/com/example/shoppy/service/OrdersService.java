@@ -9,6 +9,8 @@ public interface OrdersService {
 	
 	 Response createOrder( OrderCreateDTO order,HttpServletRequest req); 
 	 
+	 Response updateOrderById( OrderCreateDTO order,HttpServletRequest req); 
+	 
 	 Response getOrderById( OrderCreateDTO order,HttpServletRequest req); 
 	 
 	 

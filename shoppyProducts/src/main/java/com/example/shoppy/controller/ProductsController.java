@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shoppy.dto.Response;
 import com.example.shoppy.dto.WebModal;
+import com.example.shoppy.repository.ProductsRepo;
 import com.example.shoppy.service.CategoryService;
 import com.example.shoppy.service.ProductsService;
 
@@ -23,10 +24,13 @@ public class ProductsController {
 	public static final Logger logger = LoggerFactory.getLogger(ProductsController.class);
 	
 	@Autowired
-	ProductsService prodService;
+	private ProductsService prodService;
 	
 	@Autowired
-	CategoryService catService;
+	private CategoryService catService;
+	
+	@Autowired
+	private ProductsRepo productRepo;
 	
 	@PostMapping("/createCategory")
 	public ResponseEntity<Response> createCategory(@RequestBody WebModal webmodal){
@@ -144,5 +148,22 @@ public class ProductsController {
 		}
 	}
 	
+//	 productRepo.updateProductQty(item.getProductId(), item.getQty());
+	
+	
+	@PostMapping("/updateProductQty")
+	public ResponseEntity<Response> updateProductQty(@RequestBody WebModal webmodal){
+		logger.info("updateProductQty triggered");
+		try {
+			
+			productRepo.updateProductQty(webmodal.getProductId(), webmodal.getQty());
+
+			return new ResponseEntity<Response>(new Response(1, "Product QTY updated", null),HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("createProduct api catch :",e);
+			return ResponseEntity.internalServerError().body(new Response(0,e.getMessage(),null));	
+		}
+	}
 	
 }

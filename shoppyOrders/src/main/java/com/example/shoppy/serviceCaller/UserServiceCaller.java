@@ -21,9 +21,9 @@ public class UserServiceCaller {
 	
 	@CircuitBreaker(name = "shoppyUsers",fallbackMethod = "getUserByIdFallBack" )
 	public Response getUserById(OrderCreateDTO order,String token) {
-		return userClient.getUserById(order, token);
+		return userClient.getUserById(order, token);	
 	}
-	
+
 	 Response getUserByIdFallBack(OrderCreateDTO order,String token,Exception ex) {
 		log.info("getUserByIdFallBack : {}",ex);
 		return new Response(2,"User Service Down",null);	
